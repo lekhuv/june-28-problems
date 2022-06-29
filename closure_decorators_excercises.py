@@ -4,7 +4,21 @@
 #Using a closure, create a function, multiples_of(n) which we can use to
 #create generators that generate multiples of n less than a given number.
 
+# Multiplier of 3
+from ast import arg
+from msilib.schema import Class
+
+
+def multiples_of(n):   
+    def multiplier(i):
+        j = 1        
+        while ((j * n)< i):        
+            yield j * n
+            j+=1                         
+    return multiplier
 m3 = multiples_of(3)
+print(*m3(7))
+
 m3_under30 = m3(30)
 m7_under30 = multiples_of(7)(30)
 
@@ -22,6 +36,24 @@ print(*m7_under30)
 #@make_upper – make every letter of a string returned from the decorated
 #function uppercase.
 
+class upper_case:
+
+  def __init__(self, original_function):
+    self.original_function = original_function
+
+
+  def __call__(self):
+    # Code can be executed before the original function
+    # print(f"'{self.original_function.__name__}' function execution will start now.")
+
+    # Original function call with the upper cased argument
+    result = self.original_function()
+
+    # Code can be executed after the original function
+    result = result.upper()
+    return result
+
+@upper_case
 def hello_world():
     return 'hello young, good day!!'
 
@@ -32,17 +64,46 @@ print(hello_world()) # output: HELLO YOUNG, GOOD DAY!!
 #@print_func_name – print the name of the decorated function before
 #executing the function.
 
+class myfunction_decorator:
+
+  def __init__(self, original_function):
+    self.original_function = original_function
+
+
+  def __call__(self):
+    # Code can be executed before the original function
+    print(f"{self.original_function.__name__} is running...")
+
+    # Original function call with the upper cased argument
+    result = self.original_function()
+
+    # Code can be executed after the original function
+    #result = result.replace("!","")
+    return result
+
+@myfunction_decorator
 def my_func():
-    print('Python is fun!!')
+    print('Python is fun')
 
 my_func() # output: my_func is running...
             #Python is fun
 #----------------------------------------------------------------------
+class myfunction_decoratorwithargs:
+    def __init__(self, arg1):
+        self.arg1 = arg1
+    
+    def __call__(self, foo, *args):
+        def inner_func(*args,):
+            return foo(*args)
+        return inner_func
 
 #Decoratos Excercise 3
 #@give_name(name) – concatenate the given name at the end of a string
 #returned from the decorated function.
-def greeting():
+@myfunction_decoratorwithargs("Theresa")
+def greeting(*args):
+    for arg in args:
+        print(arg)
     return 'Hello'
 
 print(greeting()) # output: Hello Theresa
