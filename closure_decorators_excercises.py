@@ -164,12 +164,22 @@ print(square(2.9)) # output: The return type is <class 'float'>
 #Decorators Excercise 6
 #@execute_log – write a function execution log on the log file. (log below)
 
+from datetime import datetime
+def execute_log(func):
+    def inner(*args):
+        print(f"{str(datetime.now())}  {func.__name__}")
+        return func(*args)
+    return inner
+    
+
+@execute_log
 def multiply(*nums):
     mult = 1
     for n in nums:
         mult *= n
     return mult
 
+@execute_log
 def hello_world():
     return 'hello world!!'
 
