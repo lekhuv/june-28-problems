@@ -112,10 +112,19 @@ print(greeting()) # output: Hello Theresa
 #Decorators Excercise 4
 #@print_input_type – print a data type of the input argument before
 #executing the decorated function.
+def computesquare(str_param):
+    def inner_deco(func):
+        def inner(x):
+            print (str_param, ' of ', x)
+            print ('The input data type of ', x ,' is ', type(x))
+            return func(x)
+        return inner
+    return inner_deco
 
+@computesquare('Find the Square')
 def square(n):
     return n ** 2
-
+  
 print(square(3.5)) # output: The input data type is <class 'float'>
                     #12.25
 #-------------------------------------------------------------------
@@ -126,6 +135,16 @@ print(square(3.5)) # output: The input data type is <class 'float'>
 #the function.
 
 #pass in a string
+def computesquare(str_param):
+    def inner_deco(func):
+        def inner(x):
+            print (str_param, ' of ', x)
+            print ('The result data type of ', x ,' is ', type(x ** 2))
+            return func(x)
+        return inner
+    return inner_deco
+
+@computesquare('Find the Square')
 def square(n):
     return n ** 2
 
@@ -134,6 +153,7 @@ print(square(6)) # output: =========Error!!
                     #36
 
 #pass in a float
+@computesquare('Find the Square')
 def square(n):
     return n ** 2
 
